@@ -1,40 +1,61 @@
-using Godot;
 using System;
+using Godot;
+using MetalWarriorsGamev5.Characters.Nitro.States;
+using MetalWarriorsGamev5.Utils;
+using MetroidvaniaGame.Characters.Player.States;
+
+namespace MetalWarriorsGamev5.Characters.Nitro;
 
 public partial class Nitro : CharacterBody2D
 {
-    public const float Speed = 300.0f;
+    public StateMachine StateMachine { get; private set; }
+    public AnimatedSprite2D Animation { get; private set; }
+    
+    public const float Speed = 200.0f;
     public const float JumpVelocity = -400.0f;
+
+    public override void _Ready()
+    {
+        Animation = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        
+        StateMachine = new StateMachine(new System.Collections.Generic.Dictionary<string, State>
+        {
+            {"idle", new NitroIdleState(this)},
+            {"walking", new NitroWalkingState(this)},
+        });
+        
+        StateMachine.TransitionTo("idle");
+    }
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 velocity = Velocity;
+        StateMachine._PhysicsProcess(delta);
 
-        // Add the gravity.
+        MoveAndSlide();
+    }
+
+    public void HandleGravity(double delta)
+    {
         if (!IsOnFloor())
         {
-            velocity += GetGravity() * (float)delta;
+            Velocity += GetGravity() * (float)delta;
         }
-
-        // Handle Jump.
-        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
+    }
+    
+    public float HandleMovement(double delta)
+    {
+        var direction = Input.GetAxis("DPadLeft", "DPadRight");
+        if (direction != 0)
         {
-            velocity.Y = JumpVelocity;
-        }
-
-        // Get the input direction and handle the movement/deceleration.
-        // As good practice, you should replace UI actions with custom gameplay actions.
-        Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-        if (direction != Vector2.Zero)
-        {
-            velocity.X = direction.X * Speed;
+            Velocity = new Vector2(direction * Speed, Velocity.Y);
+            
+            Animation.Scale = new Vector2(Math.Abs(Animation.Scale.X) * direction, Animation.Scale.Y);
         }
         else
         {
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+            Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, Speed), Velocity.Y);
         }
 
-        Velocity = velocity;
-        MoveAndSlide();
+        return direction;
     }
 }

@@ -1,8 +1,79 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7ouotju3fvsm"]
+[gd_scene load_steps=12 format=3 uid="uid://c7ouotju3fvsm"]
+
+[ext_resource type="Script" path="res://Characters/Nitro/Nitro.cs" id="1_mvtfq"]
+[ext_resource type="Texture2D" uid="uid://b452xlbl54p5l" path="res://Characters/Nitro/nitro-red-walking-Sheet.png" id="2_1q13g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0ulp"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(0, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubpn0"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(44, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cc3ir"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(88, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7byb2"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(132, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lv7lb"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(176, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stxnj"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(220, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3w80u"]
+atlas = ExtResource("2_1q13g")
+region = Rect2(264, 0, 44, 44)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ly6q7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0ulp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubpn0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cc3ir")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7byb2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lv7lb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_stxnj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3w80u")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 18.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m2fwa"]
+radius = 5.0
+height = 40.0
 
-[node name="Node2D" type="CharacterBody2D"]
+[node name="Nitro" type="CharacterBody2D"]
+script = ExtResource("1_mvtfq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -21)
+sprite_frames = SubResource("SpriteFrames_ly6q7")
+animation = &"walking"
+frame = 5
+frame_progress = 0.151675
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
 shape = SubResource("CapsuleShape2D_m2fwa")
