@@ -7,30 +7,22 @@ public class NitroWalkingState(Nitro nitro) : State
 {
     public override void Enter()
     {
-        // player.Velocity = new Vector2(Mathf.MoveToward(player.Velocity.X, 0, Player.Speed), player.Velocity.Y);
         nitro.Animation.Play("walking");
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override string HandleState(double delta)
     {
         nitro.HandleGravity(delta);
         nitro.HandleMovement(delta);
+        nitro.HandleShooting(delta);
         // nitro.HandleJetting(delta);
 
-        // Handle state transitions
+        // Check for needed transitions
         
-        var direction = Input.GetAxis("DPadLeft", "DPadRight");
-        if (direction != 0)
-        {
-            nitro.StateMachine.TransitionTo("walking");
-            return;
-        }
-        
-        nitro.StateMachine.TransitionTo("idle");
-        
-        // if (Input.IsActionJustPressed("ButtonA") && nitro.IsOnFloor())
-        // {
-        //     nitro.StateMachine.TransitionTo("jumping");
-        // }
+        if (nitro.IsFalling()) return "falling";
+        if (nitro.IsJetting()) return "jetting";
+        if (nitro.IsIdle()) return "idle";
+
+        return null;
     }
 }

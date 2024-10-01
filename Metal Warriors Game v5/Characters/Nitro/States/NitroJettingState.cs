@@ -3,24 +3,21 @@ using MetalWarriorsGamev5.Utils;
 
 namespace MetalWarriorsGamev5.Characters.Nitro.States;
 
-public class NitroIdleState(Nitro nitro) : State
+public class NitroJettingState(Nitro nitro) : State
 {
     public override void Enter()
     {
-        nitro.Animation.Play("walking");
-        nitro.Animation.Pause();
+        nitro.Animation.Play("jetting");
     }
 
     public override string HandleState(double delta)
     {
-        // Handle state logic
-
-        nitro.HandleStoppingHorizontalMovement(delta);
         nitro.HandleGravity(delta);
-        nitro.HandleShooting(delta);
+        nitro.HandleMovement(delta);
+        // nitro.HandleJetting(delta);
 
         // Check for needed transitions
-
+        
         if (nitro.IsFalling()) return "falling";
         if (nitro.IsWalking()) return "walking";
         if (nitro.IsJetting()) return "jetting";

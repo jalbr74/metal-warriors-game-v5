@@ -2,7 +2,6 @@ using System;
 using Godot;
 using MetalWarriorsGamev5.Characters.Nitro.States;
 using MetalWarriorsGamev5.Utils;
-using MetroidvaniaGame.Characters.Player.States;
 
 namespace MetalWarriorsGamev5.Characters.Nitro;
 
@@ -22,6 +21,7 @@ public partial class Nitro : CharacterBody2D
         {
             {"idle", new NitroIdleState(this)},
             {"walking", new NitroWalkingState(this)},
+            {"jetting", new NitroJettingState(this)},
         });
         
         StateMachine.TransitionTo("idle");
@@ -42,20 +42,53 @@ public partial class Nitro : CharacterBody2D
         }
     }
     
-    public float HandleMovement(double delta)
+    public void HandleStoppingHorizontalMovement(double delta)
+    {
+        Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, Speed), Velocity.Y);
+    }
+    
+    public void HandleMovement(double delta)
     {
         var direction = Input.GetAxis("DPadLeft", "DPadRight");
-        if (direction != 0)
+        if (direction == 0) return;
+        
+        Velocity = new Vector2(direction * Speed, Velocity.Y);
+        Animation.Scale = new Vector2(Math.Abs(Animation.Scale.X) * direction, Animation.Scale.Y);
+    }
+    
+    public void HandleShooting(double delta)
+    {
+        if (Input.IsActionJustPressed("ButtonY"))
         {
-            Velocity = new Vector2(direction * Speed, Velocity.Y);
-            
-            Animation.Scale = new Vector2(Math.Abs(Animation.Scale.X) * direction, Animation.Scale.Y);
+            GD.Print("Pew!");
         }
-        else
-        {
-            Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, Speed), Velocity.Y);
-        }
+    }
 
-        return direction;
+    public bool IsWalking()
+    {
+        return Input.GetAxis("DPadLeft", "DPadRight") != 0;
+    }
+
+    public bool IsJetting()
+    {
+        // if (Input.IsActionJustPressed("ButtonA") && nitro.IsOnFloor())
+        // {
+        //     nitro.StateMachine.TransitionTo("jetting");
+        // }
+        //
+        return Input.IsActionJustPressed("ButtonB");
+    }
+
+    public bool IsFalling()
+    {
+        return false;
+    }
+    
+    public bool IsIdle()
+    {
+        var direction = Input.GetAxis("DPadLeft", "DPadRight");
+        if (direction == 0) return true;
+
+        return false;
     }
 }

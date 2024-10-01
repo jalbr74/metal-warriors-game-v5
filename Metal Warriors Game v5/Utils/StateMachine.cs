@@ -30,7 +30,11 @@ public class StateMachine(Dictionary<string, State> states)
 
     public void _PhysicsProcess(double delta)
     {
-        _currentState?._PhysicsProcess(delta);
+        var nextState = _currentState?.HandleState(delta);
+        if (nextState != null)
+        {
+            TransitionTo(nextState);
+        }
     }
 }
 
@@ -40,5 +44,9 @@ public class State
     
     public virtual void Enter() { }
     public virtual void Exit() { }
-    public virtual void _PhysicsProcess(double delta) { }
+
+    public virtual string HandleState(double delta)
+    {
+        return null;
+    }
 }
