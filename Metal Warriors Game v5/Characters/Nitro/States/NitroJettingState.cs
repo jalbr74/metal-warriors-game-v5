@@ -19,8 +19,8 @@ public class NitroJettingState(Nitro nitro) : State
 
         // Check for needed transitions
         
-        if (nitro.IsFalling()) return "falling";
-        if (nitro.IsWalking()) return "walking";
+        if (nitro.ShouldBeFalling()) return "falling";
+        if (nitro.ShouldBeWalking()) return "walking";
 
         return null;
     }
