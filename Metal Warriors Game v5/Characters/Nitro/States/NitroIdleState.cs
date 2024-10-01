@@ -13,7 +13,7 @@ public class NitroIdleState(Nitro nitro) : State
 
     public override string HandleState(double delta)
     {
-        // Handle state logic
+        // Handle logic for this state
 
         nitro.HandleStoppingHorizontalMovement(delta);
         nitro.HandleGravity(delta);

@@ -22,6 +22,7 @@ public partial class Nitro : CharacterBody2D
             {"idle", new NitroIdleState(this)},
             {"walking", new NitroWalkingState(this)},
             {"jetting", new NitroJettingState(this)},
+            {"falling", new NitroFallingState(this)},
         });
         
         StateMachine.TransitionTo("idle");
@@ -44,6 +45,8 @@ public partial class Nitro : CharacterBody2D
     
     public void HandleStoppingHorizontalMovement(double delta)
     {
+        if (Velocity.X == 0) return;
+        
         Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, Speed), Velocity.Y);
     }
     
@@ -64,9 +67,22 @@ public partial class Nitro : CharacterBody2D
         }
     }
 
+    public void HandleJetting(double delta)
+    {
+        if (IsJetting())
+        {
+            Velocity = new Vector2(Velocity.X, JumpVelocity);
+        }
+    }
+
     public bool IsWalking()
     {
-        return Input.GetAxis("DPadLeft", "DPadRight") != 0;
+        if (IsOnFloor())
+        {
+            return Input.GetAxis("DPadLeft", "DPadRight") != 0;
+        }
+
+        return false;
     }
 
     public bool IsJetting()
@@ -76,12 +92,12 @@ public partial class Nitro : CharacterBody2D
         //     nitro.StateMachine.TransitionTo("jetting");
         // }
         //
-        return Input.IsActionJustPressed("ButtonB");
+        return Input.IsActionPressed("ButtonB");
     }
 
     public bool IsFalling()
     {
-        return false;
+        return !IsOnFloor() && Velocity.Y > 0;
     }
     
     public bool IsIdle()
