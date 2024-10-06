@@ -2,7 +2,7 @@
 
 namespace MetalWarriorsGamev5.Characters.Nitro;
 
-public static class NitroStateHelpers
+public static class NitroStateReaders
 {
     public static bool ShouldBeWalking(this Nitro nitro)
     {

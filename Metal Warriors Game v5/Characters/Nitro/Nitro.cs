@@ -34,41 +34,4 @@ public partial class Nitro : CharacterBody2D
 
         MoveAndSlide();
     }
-
-    public void HandleGravity(double delta)
-    {
-        if (!IsOnFloor())
-        {
-            Velocity += GetGravity() * (float)delta;
-        }
-    }
-    
-    public void HandleStoppingHorizontalMovement(double delta)
-    {
-        if (Velocity.X == 0) return;
-        
-        Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0, Speed), Velocity.Y);
-    }
-    
-    public void HandleMovement(double delta)
-    {
-        var direction = Input.GetAxis("DPadLeft", "DPadRight");
-        if (direction == 0) return;
-        
-        Velocity = new Vector2(direction * Speed, Velocity.Y);
-        Animation.Scale = new Vector2(Math.Abs(Animation.Scale.X) * direction, Animation.Scale.Y);
-    }
-    
-    public void HandleShooting(double delta)
-    {
-        if (Input.IsActionJustPressed("ButtonY"))
-        {
-            GD.Print("Pew!");
-        }
-    }
-
-    public void HandleJetting(double delta)
-    {
-        Velocity = new Vector2(Velocity.X, JumpVelocity);
-    }
 }
