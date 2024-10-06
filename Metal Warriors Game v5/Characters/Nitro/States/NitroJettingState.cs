@@ -3,7 +3,7 @@ using MetalWarriorsGamev5.Utils;
 
 namespace MetalWarriorsGamev5.Characters.Nitro.States;
 
-public class NitroJettingState(Nitro nitro) : NitroBaseState(nitro)
+public class NitroJettingState(Nitro nitro) : State
 {
     public override void Enter()
     {
@@ -14,13 +14,13 @@ public class NitroJettingState(Nitro nitro) : NitroBaseState(nitro)
     {
         // Handle logic for this state
         
-        Nitro.HandleJetting(delta);
-        Nitro.HandleMovement(delta);
+        nitro.HandleJetting(delta);
+        nitro.HandleMovement(delta);
 
         // Check for needed transitions
         
-        if (ShouldBeFalling()) return "falling";
-        if (ShouldBeWalking()) return "walking";
+        if (nitro.ShouldBeFalling()) return "falling";
+        if (nitro.ShouldBeWalking()) return "walking";
 
         return null;
     }

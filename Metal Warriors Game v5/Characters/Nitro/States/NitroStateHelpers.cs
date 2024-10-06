@@ -1,15 +1,12 @@
 ﻿using Godot;
-using MetalWarriorsGamev5.Utils;
 
-namespace MetalWarriorsGamev5.Characters.Nitro.States;
+namespace MetalWarriorsGamev5.Characters.Nitro;
 
-public abstract class NitroBaseState(Nitro nitro) : State
+public static class NitroStateHelpers
 {
-    protected readonly Nitro Nitro = nitro;
-
-    public bool ShouldBeWalking()
+    public static bool ShouldBeWalking(this Nitro nitro)
     {
-        if (Nitro.IsOnFloor())
+        if (nitro.IsOnFloor())
         {
             return Input.GetAxis("DPadLeft", "DPadRight") != 0;
         }
@@ -17,7 +14,7 @@ public abstract class NitroBaseState(Nitro nitro) : State
         return false;
     }
 
-    public bool ShouldBeJetting()
+    public static bool ShouldBeJetting(this Nitro nitro)
     {
         // if (Input.IsActionJustPressed("ButtonA") && nitro.IsOnFloor())
         // {
@@ -27,17 +24,17 @@ public abstract class NitroBaseState(Nitro nitro) : State
         return Input.IsActionPressed("ButtonB");
     }
 
-    public bool ShouldBeFalling()
+    public static bool ShouldBeFalling(this Nitro nitro)
     {
-        return !Nitro.IsOnFloor() && Nitro.Velocity.Y > 0;
+        return !nitro.IsOnFloor() && nitro.Velocity.Y > 0;
     }
     
-    public bool ShouldBeIdle()
+    public static bool ShouldBeIdle(this Nitro nitro)
     {
         var direction = Input.GetAxis("DPadLeft", "DPadRight");
         if (direction == 0)
         {
-            if (Nitro.IsOnFloor() && Nitro.Velocity.X == 0)
+            if (nitro.IsOnFloor() && nitro.Velocity.X == 0)
             {
                 return true;
             }
