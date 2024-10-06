@@ -69,42 +69,6 @@ public partial class Nitro : CharacterBody2D
 
     public void HandleJetting(double delta)
     {
-        if (ShouldBeJetting())
-        {
-            Velocity = new Vector2(Velocity.X, JumpVelocity);
-        }
-    }
-
-    public bool ShouldBeWalking()
-    {
-        if (IsOnFloor())
-        {
-            return Input.GetAxis("DPadLeft", "DPadRight") != 0;
-        }
-
-        return false;
-    }
-
-    public bool ShouldBeJetting()
-    {
-        // if (Input.IsActionJustPressed("ButtonA") && nitro.IsOnFloor())
-        // {
-        //     nitro.StateMachine.TransitionTo("jetting");
-        // }
-        //
-        return Input.IsActionPressed("ButtonB");
-    }
-
-    public bool ShouldBeFalling()
-    {
-        return !IsOnFloor() && Velocity.Y > 0;
-    }
-    
-    public bool ShouldBeIdle()
-    {
-        var direction = Input.GetAxis("DPadLeft", "DPadRight");
-        if (direction == 0) return true;
-
-        return false;
+        Velocity = new Vector2(Velocity.X, JumpVelocity);
     }
 }

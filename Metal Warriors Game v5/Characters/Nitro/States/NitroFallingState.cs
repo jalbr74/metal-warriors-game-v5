@@ -3,25 +3,25 @@ using MetalWarriorsGamev5.Utils;
 
 namespace MetalWarriorsGamev5.Characters.Nitro.States;
 
-public class NitroFallingState(Nitro nitro) : State
+public class NitroFallingState(Nitro nitro) : NitroBaseState(nitro)
 {
     public override void Enter()
     {
-        nitro.Animation.Play("walking");
-        nitro.Animation.Pause();
+        Nitro.Animation.Play("walking");
+        Nitro.Animation.Pause();
     }
 
     public override string HandleState(double delta)
     {
         // Handle logic for this state
 
-        nitro.HandleGravity(delta);
-        nitro.HandleShooting(delta);
+        Nitro.HandleGravity(delta);
+        Nitro.HandleShooting(delta);
 
         // Check for needed transitions
 
-        if (nitro.ShouldBeJetting()) return "jetting";
-        if (nitro.ShouldBeIdle())    return "idle";
+        if (ShouldBeJetting()) return "jetting";
+        if (ShouldBeIdle())    return "idle";
 
         return null;
     }
